@@ -1,0 +1,28 @@
+# Use root/example as user/password credentials
+version: "3.8"
+
+networks:
+  mynetwork:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:alpine
+    container_name: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - mynetwork
+
+  api:
+    build: .
+    command: "npm run start"
+    ports:
+      - "8081:8081"
+    networks:
+      - mynetwork
+    depends_on:
+      - db
