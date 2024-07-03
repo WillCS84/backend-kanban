@@ -14,5 +14,9 @@ export class User {
     if (!id_user) {
       this.id_user = uuidv4()
     }
+
+    if (!this.id_profile) {
+      this.id_profile = 0
+    }
   }
 }

@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express"
 import { profileController } from "./components/Profiles"
 import { userController } from "./components/Users"
 import { authLoginController } from "./components/Auth"
+import { taskController } from "./components/Task"
 
 const routes = Router()
 
@@ -21,5 +22,9 @@ routes.get("/user", userController.findAllUser)
 routes.post("/user", userController.createUser)
 routes.put("/user", userController.updateUser)
 routes.delete("/user", userController.removeUser)
+
+// routes on task
+routes.get("/task", taskController.findAllTask)
+routes.post("/task", taskController.createTask)
 
 export { routes }
