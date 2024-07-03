@@ -1,7 +1,7 @@
 import { prisma } from "../../../database"
 import { Task } from "../../../entities/Task/Task"
 import { ResponseRepository } from "../../../Utils/interfaces"
-import { ITaskRepository } from "../../interfaces/taskInterface"
+import { ITaskRepository, ITaskRequestDTO } from "../../interfaces/taskInterface"
 
 export class PostgresTaskRepository implements ITaskRepository {
   async saveTask(task: Task): Promise<ResponseRepository> {
@@ -40,6 +40,87 @@ export class PostgresTaskRepository implements ITaskRepository {
       error: true,
       message: "Não foi possivel carregar a lista de tarefas!",
       status: 400
+    }
+  }
+
+  async removeTask(id_task: number): Promise<ResponseRepository> {
+    try {
+      if (!id_task)
+        throw {
+          error: true,
+          message: "Id da tarefa é obrigatório",
+          status: 400
+        }
+
+      const task = await prisma.task.delete({
+        where: {
+          id_task: id_task
+        }
+      })
+
+      if (task) {
+        return {
+          error: false,
+          message: "Tarefa removida com sucesso!",
+          status: 200
+        }
+      }
+
+      throw {
+        error: true,
+        message: "Não foi possível remover a tarefa!",
+        status: 400
+      }
+    } catch (error) {
+      throw {
+        error: true,
+        message: error,
+        status: 400
+      }
+    }
+  }
+
+  async updateTask(id_task: number, fields: ITaskRequestDTO): Promise<ResponseRepository> {
+    try {
+      if (!id_task)
+        throw {
+          error: true,
+          message: "Id da tarefa é obrigatório",
+          status: 400
+        }
+
+      const { description, status, title } = fields
+
+      const update = await prisma.task.updateMany({
+        where: {
+          id_task: id_task
+        },
+        data: {
+          description,
+          status,
+          title
+        }
+      })
+
+      if (update.count > 0) {
+        return {
+          error: false,
+          message: "Tarefa Atualizada com sucesso!",
+          status: 200
+        }
+      }
+
+      throw {
+        error: true,
+        message: "Não foi possível atualizar a tarefa!",
+        status: 400
+      }
+    } catch (error) {
+      throw {
+        error: true,
+        message: error,
+        status: 400
+      }
     }
   }
 }

@@ -26,5 +26,7 @@ routes.delete("/user", userController.removeUser)
 // routes on task
 routes.get("/task", taskController.findAllTask)
 routes.post("/task", taskController.createTask)
+routes.put("/task", taskController.updateTask)
+routes.delete("/task", taskController.deleteTask)
 
 export { routes }

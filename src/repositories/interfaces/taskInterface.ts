@@ -11,4 +11,6 @@ export interface ITaskRequestDTO {
 export interface ITaskRepository {
   saveTask(task: Task): Promise<ResponseRepository>
   findAll(): Promise<ResponseRepository>
+  removeTask(id_task: number): Promise<ResponseRepository>
+  updateTask(id_task: number, fields: ITaskRequestDTO): Promise<ResponseRepository>
 }
