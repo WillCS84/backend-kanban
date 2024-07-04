@@ -1,7 +1,6 @@
 import { prisma } from "../../../database"
 import { User } from "../../../entities/Users/Users"
 import { ResponseRepository } from "../../../Utils/interfaces"
-import { IProfileRequestDTO } from "../../interfaces/profileInterface"
 import { IUserRepository, IUserRequestDTO } from "../../interfaces/userInterface"
 
 export class PostgresUserRepository implements IUserRepository {
@@ -39,39 +38,13 @@ export class PostgresUserRepository implements IUserRepository {
         }
       }
 
-      let newProfile = [
-        { name: "Administrador", code: "1" },
-        { name: "Usuário", code: "2" },
-        { name: "Visitante", code: "3" }
-      ]
-
-      let profile: IProfileRequestDTO[] = await prisma.profile.findMany()
-
-      if (profile.length <= 0) {
-        for (let i = 0; i < newProfile.length; i++) {
-          await prisma.profile.create({
-            data: {
-              role: newProfile[i].code,
-              description: newProfile[i].name
-            }
-          })
-        }
-      }
-
-      let role = String(user.id_profile)
-
-      const profileUser = await prisma.profile.findFirst({ where: { role: role } })
       const newUser = await prisma.user.create({
         data: {
           id_user: user.id_user,
           email: user.email,
           name: user.name,
           password: user.password,
-          profile: {
-            connect: {
-              id_profile: profileUser.id_profile
-            }
-          }
+          id_profile: user.id_profile
         }
       })
 
@@ -79,7 +52,7 @@ export class PostgresUserRepository implements IUserRepository {
         return {
           error: false,
           message: "Usuário criado com sucesso!",
-          response: { user: newUser, profiles: await prisma.profile.findMany() },
+          response: newUser,
           status: 201
         }
       }

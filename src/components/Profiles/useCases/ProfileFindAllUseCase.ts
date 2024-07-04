@@ -1,4 +1,3 @@
-import { Response } from "express"
 import { IProfileRepository } from "../../../repositories/interfaces/profileInterface"
 
 export class ListAllProfilesUseCases {

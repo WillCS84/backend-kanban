@@ -24,12 +24,11 @@ export class CreateUserUseCase {
   }
 
   private validateUser = async (data: IUserRequestDTO) => {
-    const { email, id_profile, password, name } = data
+    const { email, password, name } = data
 
     let message = undefined
 
     if (!email || email === " ") message = "Não foi possível localizar a email do usuário!"
-    if (!id_profile) message = "Não foi possível localizar o perfil do usuário!"
     if (!name || name === " ") message = "Não foi possível localizar o nome do usuário!"
     if (!password) message = "Não foi possível localizar a senha!"
 

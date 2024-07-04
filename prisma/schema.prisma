@@ -13,8 +13,6 @@ model Profile {
   description String
   role        String
 
-  User User[]
-
   @@map("profile")
 }
 
@@ -25,8 +23,16 @@ model User {
   password   String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  profile    Profile  @relation(fields: [id_profile], references: [id_profile])
-  id_profile Int
+  id_profile Int      @default(0)
 
   @@map("user")
+}
+
+model Task {
+  id_task     Int      @id @default(autoincrement())
+  title       String
+  description String
+  status      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
