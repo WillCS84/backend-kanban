@@ -1,7 +1,10 @@
 import express from "express"
 import cors from "cors"
 import { routes } from "./routes"
-require("dotenv/config")
+
+require("dotenv").config({
+  path: process.env.NODE_ENV === "development" ? ".env.development" : ".env.production"
+})
 
 const PORT = process.env.PORT
 const app = express()

@@ -4,8 +4,12 @@
   "description": "Gerênciamento de tarefas",
   "main": "server.ts",
   "scripts": {
+    "copy-env": "ts-node copy-env.ts",
     "test": "vitest",
-    "start": "npx prisma db push && tsnd --transpile-only --respawn --ignore-watch node_modules src/server.ts"
+    "start": "cross-env NODE_ENV=production npm run copy-env && npx prisma db push && tsnd --transpile-only --respawn --ignore-watch node_modules src/server.ts",
+    "dev": "cross-env NODE_ENV=development npm run copy-env && npx prisma db push && tsnd --transpile-only --respawn --ignore-watch node_modules src/server.ts",
+    "prisma-generate": "cross-env NODE_ENV=development npm run copy-env && npx prisma generate",
+    "prisma-migrate-dev": "cross-env NODE_ENV=development npm run copy-env && npx prisma migrate dev"
   },
   "author": "Willian C. S.",
   "license": "ISC",
@@ -21,6 +25,7 @@
   "dependencies": {
     "@prisma/client": "^5.15.0",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "uuidv4": "^6.2.13"
